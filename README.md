@@ -1,3 +1,10 @@
+ADMIN EMAIL AND PASSWORD:
+
+Email: admin@dayflow.com     
+Password: admin123
+
+
+
 # Dayflow HRMS
 
 A compact, hackathon-focused HRMS prototype built with Node.js and EJS. It demonstrates essential HR flows — signup/login, employee profiles, attendance and leave tracking, and profile uploads — using JSON files so you can demo instantly without a database.
