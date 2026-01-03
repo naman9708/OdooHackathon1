@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Dashboard - Dayflow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+        .header {
+            background: #0f0f1e;
+            border-bottom: 2px solid #444;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .nav-item {
+            padding: 8px 20px;
+            color: #fff;
+            text-decoration: none;
+            transition: background 0.3s;
+            border-radius: 5px;
+        }
+        .nav-item:hover {
+            background: #2a2a3e;
+        }
+        .company-name {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+        }
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .dropdown {
+            position: absolute;
+            top: 60px;
+            right: 0;
+            background: #1e1e2e;
+            border: 2px solid #444;
+            border-radius: 8px;
+            padding: 10px 0;
+            display: none;
+            min-width: 150px;
+            z-index: 1000;
+        }
+        .dropdown.active {
+            display: block;
+        }
+        .dropdown-item {
+            padding: 10px 20px;
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            transition: background 0.3s;
+        }
+        .dropdown-item:hover {
+            background: #2a2a3e;
+        }
+        .container {
+            padding: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        .card {
+            background: #1e1e2e;
+            border: 2px solid #444;
+            padding: 25px;
+            border-radius: 10px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .card:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+        }
+        .card-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+        .card-content {
+            color: #ccc;
+        }
+        .btn {
+            background: #8b5cf6;
+            color: #fff;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 15px;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn:hover {
+            background: #7c3aed;
+            transform: translateY(-2px);
+        }
+        .status-card {
+            background: #1e1e2e;
+            border: 2px solid #444;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .status-indicator {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+        }
+        .status-present {
+            background: #10b981;
+        }
+        .status-absent {
+            background: #ef4444;
+        }
+        .checkin-section {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .time-display {
+            font-size: 18px;
+            color: #888;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="nav">
+            <div class="company-name">Dayflow</div>
+            <a href="/dashboard" class="nav-item">Dashboard</a>
+            <a href="/profile" class="nav-item">Profile</a>
+            <a href="/attendance" class="nav-item">Attendance</a>
+            <a href="/leaves" class="nav-item">Time Off</a>
+        </div>
+        <div class="user-section">
+            <span><%= user.name %></span>
+            <div class="user-avatar" onclick="toggleDropdown()">
+                <% if (profile.profilePicture) { %>
+                    <img src="<%= profile.profilePicture %>" alt="<%= user.name %>">
+                <% } else { %>
+                    <%= user.name.charAt(0).toUpperCase() %>
+                <% } %>
+            </div>
+            <div class="dropdown" id="userDropdown">
+                <a href="/profile" class="dropdown-item">My Profile</a>
+                <a href="/logout" class="dropdown-item">Log Out</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>Welcome, <%= user.name %>!</h1>
+        
+        <div class="status-card">
+            <h2>Check In / Out</h2>
+            <div class="status-indicator <%= profile.status === 'present' ? 'status-present' : 'status-absent' %>">
+                <%= profile.status === 'present' ? '✓' : '✕' %>
+            </div>
+            <p>Status: <strong><%= profile.status === 'present' ? 'Present' : 'Absent' %></strong></p>
+            <div id="timeDisplay" class="time-display"></div>
+            <div class="checkin-section">
+                <button class="btn" onclick="checkIn()">Check In</button>
+                <button class="btn" onclick="checkOut()">Check Out</button>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="card" onclick="location.href='/profile'">
+                <h3 class="card-title">My Profile</h3>
+                <div class="card-content">
+                    <p>View and edit your personal information</p>
+                    <a href="/profile" class="btn">View Profile</a>
+                </div>
+            </div>
+
+            <div class="card" onclick="location.href='/attendance'">
+                <h3 class="card-title">Attendance</h3>
+                <div class="card-content">
+                    <p>Recent entries: <%= recentAttendance.length %></p>
+                    <a href="/attendance" class="btn">View Attendance</a>
+                </div>
+            </div>
+
+            <div class="card" onclick="location.href='/leaves'">
+                <h3 class="card-title">Leave Requests</h3>
+                <div class="card-content">
+                    <p>Pending: <%= recentLeaves.filter(l => l.status === 'pending').length %></p>
+                    <a href="/leaves" class="btn">Manage Leaves</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleDropdown() {
+            document.getElementById('userDropdown').classList.toggle('active');
+        }
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.user-section')) {
+                document.getElementById('userDropdown').classList.remove('active');
+            }
+        });
+
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('timeDisplay').textContent = now.toLocaleTimeString();
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        async function checkIn() {
+            const response = await fetch('/attendance/checkin', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include'
+            });
+            const data = await response.json();
+            if (data.success) {
+                alert('Checked in successfully!');
+                location.reload();
+            } else {
+                alert(data.error || 'Error checking in');
+            }
+        }
+
+        async function checkOut() {
+            const response = await fetch('/attendance/checkout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include'
+            });
+            const data = await response.json();
+            if (data.success) {
+                alert('Checked out successfully!');
+                location.reload();
+            } else {
+                alert(data.error || 'Error checking out');
+            }
+        }
+    </script>
+</body>
+</html>

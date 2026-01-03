@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance - Dayflow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+        .header {
+            background: #0f0f1e;
+            border-bottom: 2px solid #444;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .nav-item {
+            padding: 8px 20px;
+            color: #fff;
+            text-decoration: none;
+            transition: background 0.3s;
+            border-radius: 5px;
+        }
+        .nav-item:hover {
+            background: #2a2a3e;
+        }
+        .company-name {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .container {
+            padding: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .table-container {
+            background: #1e1e2e;
+            border: 2px solid #444;
+            border-radius: 10px;
+            padding: 25px;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #444;
+        }
+        th {
+            color: #667eea;
+            font-weight: 600;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        tr:hover {
+            background: #2a2a3e;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status-present {
+            background: #10b981;
+            color: white;
+        }
+        .status-absent {
+            background: #ef4444;
+            color: white;
+        }
+        .status-halfday {
+            background: #f59e0b;
+            color: white;
+        }
+        .status-leave {
+            background: #8b5cf6;
+            color: white;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #888;
+        }
+        .empty-state svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="nav">
+            <div class="company-name">Dayflow</div>
+            <a href="/dashboard" class="nav-item">Dashboard</a>
+            <% if (isAdmin) { %>
+                <a href="/employees" class="nav-item">Employees</a>
+            <% } else { %>
+                <a href="/profile" class="nav-item">Profile</a>
+            <% } %>
+            <a href="/attendance" class="nav-item">Attendance</a>
+            <a href="/leaves" class="nav-item">Time Off</a>
+        </div>
+        <div>
+            <a href="/logout" class="nav-item">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1 style="margin-bottom: 30px;">Attendance Records</h1>
+
+        <div class="table-container">
+            <% if (records.length === 0) { %>
+                <div class="empty-state">
+                    <svg fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V9h14v10zM7 11h5v5H7z"/>
+                    </svg>
+                    <h3>No attendance records found</h3>
+                    <p>Start tracking your attendance from the dashboard</p>
+                </div>
+            <% } else { %>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <% if (isAdmin) { %>
+                                <th>Employee</th>
+                            <% } %>
+                            <th>Check In</th>
+                            <th>Check Out</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% records.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(record => { %>
+                            <tr>
+                                <td><%= new Date(record.date).toLocaleDateString() %></td>
+                                <% if (isAdmin) { %>
+                                    <td><%= record.employeeName %></td>
+                                <% } %>
+                                <td><%= record.checkIn || 'N/A' %></td>
+                                <td><%= record.checkOut || 'Not checked out' %></td>
+                                <td>
+                                    <span class="status-badge status-<%= record.status %>">
+                                        <%= record.status.charAt(0).toUpperCase() + record.status.slice(1) %>
+                                    </span>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html>

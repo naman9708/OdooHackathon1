@@ -1,0 +1,74 @@
+[
+  {
+    "id": "1767431998613",
+    "employeeId": "EMployee03",
+    "employeeName": "ankit roy",
+    "date": "2026-01-03",
+    "checkIn": "2:49:58 pm",
+    "checkOut": null,
+    "status": "present"
+  },
+  {
+    "id": "1767432671414",
+    "employeeId": "EMployee04",
+    "employeeName": "ayaz",
+    "date": "2026-01-03",
+    "checkIn": "3:01:11 pm",
+    "checkOut": "3:41:47 pm",
+    "status": "present"
+  },
+  {
+    "id": "1767433806571",
+    "employeeId": "EMployee05",
+    "employeeName": "ailan",
+    "date": "2026-01-03",
+    "checkIn": "3:20:06 pm",
+    "checkOut": "3:25:18 pm",
+    "status": "present"
+  },
+  {
+    "id": "1767436028560",
+    "employeeId": "EMployee06",
+    "employeeName": "aashish",
+    "date": "2026-01-03",
+    "checkIn": "3:57:08 pm",
+    "checkOut": "4:00:56 pm",
+    "status": "present"
+  },
+  {
+    "id": "1767436723718",
+    "employeeId": "EMployee07",
+    "employeeName": "aryan",
+    "date": "2026-01-03",
+    "checkIn": "4:08:43 pm",
+    "checkOut": "4:12:30 pm",
+    "status": "present"
+  },
+  {
+    "id": "1767437110044",
+    "employeeId": "EMployee010",
+    "employeeName": "hari om",
+    "date": "2026-01-03",
+    "checkIn": "4:15:10 pm",
+    "checkOut": "4:16:15 pm",
+    "status": "present"
+  },
+  {
+    "id": "1767438502548",
+    "employeeId": "EMployee11",
+    "employeeName": "odoo",
+    "date": "2026-01-03",
+    "checkIn": "4:38:22 pm",
+    "checkOut": null,
+    "status": "present"
+  },
+  {
+    "id": "1767438738474",
+    "employeeId": "EMployee9",
+    "employeeName": "naman",
+    "date": "2026-01-03",
+    "checkIn": "4:42:18 pm",
+    "checkOut": null,
+    "status": "present"
+  }
+]

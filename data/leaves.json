@@ -1,0 +1,24 @@
+[
+  {
+    "id": "1767432133971",
+    "employeeId": "EMployee03",
+    "employeeName": "ankit roy",
+    "leaveType": "Paid",
+    "startDate": "2026-01-04",
+    "endDate": "2026-01-08",
+    "remarks": "abcdefghijklmnopqrstuvwxyz",
+    "status": "approved",
+    "appliedDate": "2026-01-03"
+  },
+  {
+    "id": "1767433886654",
+    "employeeId": "EMployee05",
+    "employeeName": "ailan",
+    "leaveType": "Paid",
+    "startDate": "2026-01-03",
+    "endDate": "2026-01-04",
+    "remarks": "dvvfvfvfvfvfvbf",
+    "status": "rejected",
+    "appliedDate": "2026-01-03"
+  }
+]

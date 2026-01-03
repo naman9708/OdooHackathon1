@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employees - Dayflow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+        .header {
+            background: #0f0f1e;
+            border-bottom: 2px solid #444;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .nav-item {
+            padding: 8px 20px;
+            color: #fff;
+            text-decoration: none;
+            transition: background 0.3s;
+            border-radius: 5px;
+        }
+        .nav-item:hover {
+            background: #2a2a3e;
+        }
+        .company-name {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .container {
+            padding: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .search-bar {
+            width: 100%;
+            max-width: 500px;
+            padding: 12px 20px;
+            background: transparent;
+            border: 2px solid #444;
+            color: #fff;
+            font-size: 14px;
+            border-radius: 5px;
+            outline: none;
+            margin-bottom: 30px;
+        }
+        .search-bar:focus {
+            border-color: #8b5cf6;
+        }
+        .employee-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
+        }
+        .employee-card {
+            background: #1e1e2e;
+            border: 2px solid #444;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .employee-card:hover {
+            border-color: #8b5cf6;
+            transform: translateY(-5px);
+        }
+        .employee-avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .employee-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .employee-avatar svg {
+            width: 70%;
+            height: 70%;
+            fill: white;
+        }
+        .status-dot {
+            position: absolute;
+            bottom: -3px;
+            right: -3px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 3px solid #1e1e2e;
+        }
+        .status-dot.present { background: #10b981; }
+        .status-dot.absent { background: #ef4444; }
+        .status-dot.leave { background: #f59e0b; }
+        .employee-info {
+            flex: 1;
+        }
+        .employee-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .employee-role {
+            font-size: 12px;
+            color: #888;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="nav">
+            <div class="company-name">Dayflow</div>
+            <a href="/dashboard" class="nav-item">Dashboard</a>
+            <a href="/employees" class="nav-item">Employees</a>
+            <a href="/attendance" class="nav-item">Attendance</a>
+            <a href="/leaves" class="nav-item">Time Off</a>
+        </div>
+        <div>
+            <a href="/logout" class="nav-item">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1 style="margin-bottom: 30px;">All Employees</h1>
+
+        <button id="addEmployeeBtn" class="btn-primary" style="margin-bottom: 20px;">Add New Employee</button>
+
+        <div id="addEmployeeForm" style="display: none; background: #1e1e2e; padding: 20px; border-radius: 10px; margin-bottom: 30px;">
+            <h3 style="margin-bottom: 20px; color: #fff;">Add New Employee</h3>
+            <form method="POST" action="/employees/add">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div>
+                        <label style="color: #fff; display: block; margin-bottom: 5px;">Employee ID</label>
+                        <input type="text" name="employeeId" required style="width: 100%; padding: 8px; border: 1px solid #444; border-radius: 5px; background: #2a2a3e; color: #fff;">
+                    </div>
+                    <div>
+                        <label style="color: #fff; display: block; margin-bottom: 5px;">Email</label>
+                        <input type="email" name="email" required style="width: 100%; padding: 8px; border: 1px solid #444; border-radius: 5px; background: #2a2a3e; color: #fff;">
+                    </div>
+                    <div>
+                        <label style="color: #fff; display: block; margin-bottom: 5px;">Password</label>
+                        <input type="password" name="password" required style="width: 100%; padding: 8px; border: 1px solid #444; border-radius: 5px; background: #2a2a3e; color: #fff;">
+                    </div>
+                    <div>
+                        <label style="color: #fff; display: block; margin-bottom: 5px;">Name</label>
+                        <input type="text" name="name" required style="width: 100%; padding: 8px; border: 1px solid #444; border-radius: 5px; background: #2a2a3e; color: #fff;">
+                    </div>
+                    <div>
+                        <label style="color: #fff; display: block; margin-bottom: 5px;">Phone</label>
+                        <input type="text" name="phone" style="width: 100%; padding: 8px; border: 1px solid #444; border-radius: 5px; background: #2a2a3e; color: #fff;">
+                    </div>
+                    <div>
+                        <label style="color: #fff; display: block; margin-bottom: 5px;">Department</label>
+                        <input type="text" name="department" style="width: 100%; padding: 8px; border: 1px solid #444; border-radius: 5px; background: #2a2a3e; color: #fff;">
+                    </div>
+                    <div>
+                        <label style="color: #fff; display: block; margin-bottom: 5px;">Position</label>
+                        <input type="text" name="position" style="width: 100%; padding: 8px; border: 1px solid #444; border-radius: 5px; background: #2a2a3e; color: #fff;">
+                    </div>
+                    <div>
+                        <label style="color: #fff; display: block; margin-bottom: 5px;">Salary</label>
+                        <input type="number" name="salary" style="width: 100%; padding: 8px; border: 1px solid #444; border-radius: 5px; background: #2a2a3e; color: #fff;">
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary" style="margin-top: 15px;">Add Employee</button>
+                <button type="button" id="cancelBtn" style="margin-top: 15px; margin-left: 10px; background: #666;">Cancel</button>
+            </form>
+        </div>
+
+        <input type="text" class="search-bar" placeholder="Search employees..." id="searchInput" oninput="searchEmployees()">
+
+        <div class="employee-grid" id="employeeGrid">
+            <% employees.forEach(emp => { %>
+                <div class="employee-card" data-name="<%= emp.name.toLowerCase() %>" data-position="<%= (emp.position || '').toLowerCase() %>" onclick="location.href='/employees/<%= emp.id %>'">
+                    <div class="employee-avatar">
+                        <% if (emp.profilePicture) { %>
+                            <img src="<%= emp.profilePicture %>" alt="<%= emp.name %>">
+                        <% } else { %>
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20C4 16.6863 6.68629 14 10 14H14C17.3137 14 20 16.6863 20 20V21H4V20Z"/></svg>
+                        <% } %>
+                        <div class="status-dot <%= emp.status %>"></div>
+                    </div>
+                    <div class="employee-info">
+                        <div class="employee-name"><%= emp.name %></div>
+                        <div class="employee-role"><%= emp.position || 'Employee' %></div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('addEmployeeBtn').addEventListener('click', function() {
+            document.getElementById('addEmployeeForm').style.display = 'block';
+        });
+        document.getElementById('cancelBtn').addEventListener('click', function() {
+            document.getElementById('addEmployeeForm').style.display = 'none';
+        });
+
+        function searchEmployees() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.employee-card');
+            
+            cards.forEach(card => {
+                const name = card.getAttribute('data-name');
+                const position = card.getAttribute('data-position');
+                
+                if (name.includes(searchTerm) || position.includes(searchTerm)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= employee.name %> - Dayflow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+        .header {
+            background: #0f0f1e;
+            border-bottom: 2px solid #444;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .nav-item {
+            padding: 8px 20px;
+            color: #fff;
+            text-decoration: none;
+            transition: background 0.3s;
+            border-radius: 5px;
+        }
+        .nav-item:hover {
+            background: #2a2a3e;
+        }
+        .company-name {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .container {
+            padding: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            background: #1e1e2e;
+            border: 2px solid #444;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            overflow: hidden;
+        }
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .profile-info {
+            flex: 1;
+        }
+        .card {
+            background: #1e1e2e;
+            border: 2px solid #444;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #888;
+            font-weight: 500;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            background: #0f0f1e;
+            border: 1px solid #444;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 14px;
+        }
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .btn {
+            background: #8b5cf6;
+            color: #fff;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            background: #7c3aed;
+            transform: translateY(-2px);
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .info-item {
+            padding: 15px;
+            background: #0f0f1e;
+            border-radius: 8px;
+        }
+        .info-label {
+            color: #888;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        .info-value {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="nav">
+            <div class="company-name">Dayflow</div>
+            <a href="/dashboard" class="nav-item">Dashboard</a>
+            <a href="/employees" class="nav-item">Employees</a>
+            <a href="/attendance" class="nav-item">Attendance</a>
+            <a href="/leaves" class="nav-item">Time Off</a>
+        </div>
+        <div>
+            <a href="/logout" class="nav-item">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <a href="/employees" class="nav-item" style="display: inline-block; margin-bottom: 20px;">← Back to Employees</a>
+        
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <% if (employee.profilePicture) { %>
+                    <img src="<%= employee.profilePicture %>" alt="<%= employee.name %>">
+                <% } else { %>
+                    <%= employee.name.charAt(0).toUpperCase() %>
+                <% } %>
+            </div>
+            <div class="profile-info">
+                <h1><%= employee.name %></h1>
+                <p style="color: #888; margin-top: 5px;"><%= employee.position || 'Employee' %> • <%= employee.department || 'N/A' %></p>
+                <p style="color: #888; margin-top: 5px;">Employee ID: <%= employee.id %></p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 style="margin-bottom: 20px;">Employee Details</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Email</div>
+                    <div class="info-value"><%= employee.email %></div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Phone</div>
+                    <div class="info-value"><%= employee.phone || 'Not set' %></div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Address</div>
+                    <div class="info-value"><%= employee.address || 'Not set' %></div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Join Date</div>
+                    <div class="info-value"><%= employee.joinDate %></div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Salary</div>
+                    <div class="info-value">$<%= employee.salary.toLocaleString() %></div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Status</div>
+                    <div class="info-value"><%= employee.status %></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 style="margin-bottom: 20px;">Edit Employee</h2>
+            <form method="POST" action="/employees/<%= employee.id %>/update">
+                <div class="info-grid">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" name="name" value="<%= employee.name %>" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" name="email" value="<%= employee.email %>" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="tel" name="phone" value="<%= employee.phone || '' %>">
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input type="text" name="address" value="<%= employee.address || '' %>">
+                    </div>
+                    <div class="form-group">
+                        <label>Department</label>
+                        <input type="text" name="department" value="<%= employee.department || '' %>">
+                    </div>
+                    <div class="form-group">
+                        <label>Position</label>
+                        <input type="text" name="position" value="<%= employee.position || '' %>">
+                    </div>
+                    <div class="form-group">
+                        <label>Salary</label>
+                        <input type="number" name="salary" value="<%= employee.salary %>" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn">Update Employee</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2 style="margin-bottom: 20px;">Attendance Summary</h2>
+            <p>Total Records: <%= attendance.length %></p>
+            <p>Present Days: <%= attendance.filter(a => a.status === 'present').length %></p>
+        </div>
+
+        <div class="card">
+            <h2 style="margin-bottom: 20px;">Leave Summary</h2>
+            <p>Total Requests: <%= leaves.length %></p>
+            <p>Pending: <%= leaves.filter(l => l.status === 'pending').length %></p>
+            <p>Approved: <%= leaves.filter(l => l.status === 'approved').length %></p>
+        </div>
+    </div>
+</body>
+</html>
